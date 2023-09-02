@@ -78,6 +78,7 @@
         height: 500px;
         background-color: rgba(1, 104, 66, 0.233);
         backdrop-filter: blur(2px);
+        -webkit-backdrop-filter: blur(2px);
         gap: 10px;
       }
 
@@ -140,7 +141,7 @@
         left: 50%;
         transform: translate(-50%, 50%);
         z-index: 99;
-        animation: wowgg 0.58s ease;
+        animation: wowgg 0.55s ease;
       }
 
       @keyframes wowgg {
@@ -149,10 +150,10 @@
         }
 
         60% {
-          transform: translate(-50%, 50%) scale(1.2);
+          transform: translate(-50%, 50%) scale(1.16);
         }
         75% {
-          transform: translate(-50%, 50%) scale(0.95);
+          transform: translate(-50%, 50%) scale(0.94);
         }
         90% {
           transform: translate(-50%, 50%) scale(1.05);
@@ -181,6 +182,7 @@
         position: absolute;
         z-index: 1000;
         backdrop-filter: blur(1.5px);
+        -webkit-backdrop-filter: blur(1.5px);
         left: 50%;
         transform: translate(-50%, 50%);
         height: 510px;
