@@ -500,6 +500,11 @@
           console.error(error);
         });
       const particles = tsParticles.domItem(0);
+
+      window.addEventListener("scroll", (e) => {
+        e.preventDefault();
+        window.scrollTo(0, 0, 0, 0);
+      });
     </script>
   </body>
 </html>
