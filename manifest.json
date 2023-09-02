@@ -1,0 +1,15 @@
+{
+  "name": "Tic Tac Toe",
+  "short_name": "PWA App",
+  "description": "Simple Tic Tac Toe Game!",
+  "icons": [
+    {
+      "src": "./output-onlinepngtools.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "rgb(97, 248, 178)",
+  "display": "standalone"
+}
