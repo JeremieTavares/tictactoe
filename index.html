@@ -33,6 +33,11 @@
 
       body {
         background-color: rgb(97, 248, 178);
+        position: fixed;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
       }
 
       h1 {
@@ -503,7 +508,7 @@
 
       window.addEventListener("scroll", (e) => {
         e.preventDefault();
-        window.scrollTo(0, 0, 0, 0);
+        window.scrollTo(0, 0);
       });
     </script>
   </body>
