@@ -33,11 +33,14 @@
 
       body {
         background-color: rgb(97, 248, 178);
-        position: fixed;
-        left: 0;
-        top: 0;
-        right: 0;
-        bottom: 0;
+      }
+
+      .fixed-body {
+        position: fixed !important;
+        left: 0 !important;
+        top: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
       }
 
       h1 {
@@ -506,10 +509,15 @@
         });
       const particles = tsParticles.domItem(0);
 
-      window.addEventListener("scroll", (e) => {
-        e.preventDefault();
-        window.scrollTo(0, 0);
-      });
+      if (window.matchMedia("(display-mode: standalone)").matches) {
+        window.addEventListener("scroll", (e) => {
+          e.preventDefault();
+          window.scrollTo(0, 0);
+        });
+
+        const body = document.querySelector("body");
+        body.classList.add("fixed-body");
+      }
     </script>
   </body>
 </html>
