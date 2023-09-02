@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tsparticles/2.12.0/tsparticles.bundle.min.js"></script>
+  </head>
+  <body>
+    <style>
+      * {
+        font-family: sans-serif;
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background-color: rgb(97, 248, 178);
+      }
+
+      h1 {
+        color: rgb(230, 255, 243);
+        font-size: clamp(50px, 15vw, 80px);
+        margin-top: 20px;
+      }
+
+      section.player-score {
+        margin-top: 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font-size: clamp(1rem, 1.4rem, 2rem);
+        color: rgb(7, 84, 47);
+      }
+
+      .container {
+        display: flex;
+        justify-content: center;
+        margin-top: 85px;
+        margin-bottom: auto;
+      }
+
+      .container-game {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+        width: 500px;
+        height: 500px;
+        background-color: rgba(1, 104, 66, 0.233);
+        backdrop-filter: blur(2px);
+        gap: 10px;
+      }
+
+      .case {
+        background-color: rgb(97, 248, 178);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 100px;
+      }
+
+      .blue {
+        color: rgb(216, 172, 255);
+      }
+
+      .pink {
+        color: rgb(247, 247, 247);
+      }
+      .w-100 {
+        width: 100%;
+      }
+
+      .row {
+        display: flex;
+        flex-direction: row;
+      }
+
+      .justify-content-center {
+        justify-content: center;
+      }
+
+      .gap-100 {
+        gap: 100px;
+      }
+
+      .btn-try-again {
+        margin-top: 20px;
+        padding: 10px 20px;
+        border-radius: 10px;
+        border: none;
+        background-color: rgba(7, 84, 47, 0.754);
+        color: rgb(230, 255, 243);
+        font-size: 1.5rem;
+        cursor: pointer;
+        transition: background-color 0.2s, scale 0.3s;
+      }
+
+      .btn-try-again:hover {
+        background-color: rgba(7, 84, 47, 0.9);
+        scale: 0.98;
+      }
+
+      #result-pop-up {
+        font-size: clamp(5rem, 15vw, 7rem);
+        text-align: center;
+        width: 100%;
+        position: absolute;
+        top: 7%;
+        left: 50%;
+        transform: translate(-50%, 50%);
+        z-index: 99;
+        animation: wowgg 0.7s ease-in;
+      }
+
+      @keyframes wowgg {
+        from {
+          transform: translate(-50%, 50%) scale(0);
+        }
+
+        60% {
+          transform: translate(-50%, 50%) scale(1.3);
+        }
+        80% {
+          transform: translate(-50%, 50%) scale(0.9);
+        }
+        90% {
+          transform: translate(-50%, 50%) scale(1.1);
+        }
+        to {
+          transform: translate(-50%, 50%) scale(1);
+        }
+      }
+
+      .multicolortext {
+        background-image: linear-gradient(
+          to left,
+          rgb(247, 247, 49),
+          rgb(247, 253, 78)
+        );
+        -webkit-background-clip: text;
+        -moz-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        text-shadow: 2px 2px 2px rgba(255, 255, 255, 0.273);
+      }
+
+      .container-result-pop-up {
+        text-align: center;
+        width: 100%;
+        position: absolute;
+        z-index: 1000;
+        backdrop-filter: blur(1.5px);
+        left: 50%;
+        transform: translate(-50%, 50%);
+        height: 510px;
+        display: none;
+        justify-content: center;
+        align-items: center;
+      }
+
+      @media (max-width: 500px) {
+        body {
+          padding: 10px;
+        }
+
+        .container {
+          margin-top: 62px;
+          margin-bottom: 20px;
+        }
+
+        .container-game {
+          margin: 10px;
+          height: 440px;
+        }
+
+        #result-pop-up {
+          width: 100%;
+        }
+
+        .player-score {
+          text-align: center;
+        }
+
+        .btn-try-again {
+          margin-top: 30px;
+        }
+
+        .container-result-pop-up {
+          height: 470px;
+        }
+      }
+    </style>
+    <h1 style="text-align: center">Tic Tac Toe</h1>
+    <div id="tsparticles"></div>
+
+    <div class="container-result-pop-up" id="container-result-pop-up">
+      <h2 id="result-pop-up" class="multicolortext"></h2>
+    </div>
+
+    <section class="player-score">
+      <div class="w-100 row justify-content-center gap-100">
+        <div class="player-x">
+          <h2>Player 1</h2>
+          <span>Score: </span><span id="p1-score" data-score="0">0</span>
+        </div>
+        <div class="player-y">
+          <h2>Player 2</h2>
+          <span>Score: </span><span id="p2-score" data-score="0">0</span>
+        </div>
+      </div>
+      <div>
+        <button type="button" class="btn-try-again" id="btn-try-again">
+          Try again
+        </button>
+      </div>
+    </section>
+
+    <section class="container">
+      <div class="container-game">
+        <div class="case" data-case="0"></div>
+        <div class="case" data-case="1"></div>
+        <div class="case" data-case="2"></div>
+        <div class="case" data-case="3"></div>
+        <div class="case" data-case="4"></div>
+        <div class="case" data-case="5"></div>
+        <div class="case" data-case="6"></div>
+        <div class="case" data-case="7"></div>
+        <div class="case" data-case="8"></div>
+      </div>
+    </section>
+
+    <script>
+      const cases = document.querySelectorAll(".case");
+      const resultTitle = document.querySelector("#result-pop-up");
+      const resultContainer = document.querySelector(
+        "#container-result-pop-up"
+      );
+
+      let player = "X";
+      let playerX = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+      let playerY = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+      let isPlayerX = false;
+
+      cases.forEach((element) => {
+        element.addEventListener("click", (e) => {
+          if (element.innerHTML === "") {
+            const cssClass = player === "X" ? "blue" : "pink";
+            element.innerHTML = `<span class='${cssClass}'>${player}<span>`;
+
+            if (player === "X") {
+              playerX[e.currentTarget.dataset.case] = 1;
+              player = "O";
+            } else {
+              playerY[e.currentTarget.dataset.case] = 1;
+              player = "X";
+            }
+          }
+
+          isPlayerX = !isPlayerX;
+
+          if (hasWon(isPlayerX ? playerX : playerY)) {
+            particles.reset();
+            resultTitle.innerText = "You win !";
+            resultContainer.style.display = "flex";
+
+            const p1ScoreDom = document.querySelector("#p1-score");
+            const p2ScoreDom = document.querySelector("#p2-score");
+            isPlayerX
+              ? (p1ScoreDom.innerText = ++p1ScoreDom.dataset.score)
+              : (p2ScoreDom.innerText = ++p2ScoreDom.dataset.score);
+          }
+
+          verifyIsEachCaseIsFilled();
+        });
+      });
+
+      const hasWon = (playerScore) => {
+        const winningCombinaisons = [
+          [1, 1, 1, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 1, 1, 1, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 1, 1, 1],
+          [1, 0, 0, 1, 0, 0, 1, 0, 0],
+          [0, 1, 0, 0, 1, 0, 0, 1, 0],
+          [0, 0, 1, 0, 0, 1, 0, 0, 1],
+          [1, 0, 0, 0, 1, 0, 0, 0, 1],
+          [0, 0, 1, 0, 1, 0, 1, 0, 0],
+        ];
+
+        let consecutiveStreak = 0; // must be 3 to win
+        for (const combinaisons of winningCombinaisons) {
+          consecutiveStreak = 0;
+
+          for (const [i, score] of playerScore.entries()) {
+            combinaisons[i] === score && combinaisons[i] === 1 && score == 1
+              ? consecutiveStreak++
+              : false;
+          }
+
+          if (consecutiveStreak > 2) {
+            consecutiveStreak = 0;
+            return true;
+          }
+        }
+
+        return false;
+      };
+
+      const onClickResetGame = () => {
+        const btnReset = document.querySelector("#btn-try-again");
+
+        btnReset.addEventListener("click", () => {
+          cases.forEach((element) => {
+            element.innerHTML = "";
+          });
+
+          resultTitle.innerText = "";
+          resultContainer.style.display = "none";
+          playerX = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+          playerY = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+          player = "X";
+          isPlayerX = false;
+          particles.stop();
+        });
+      };
+
+      const verifyIsEachCaseIsFilled = () => {
+        const casesArray = Array.from(cases); // nodeList to Array
+        particles.stop();
+        const isFilled = casesArray.every(
+          (element) => element.innerHTML !== ""
+        );
+
+        if (isFilled) {
+          resultTitle.innerText = "Draw";
+          resultContainer.style.display = "flex";
+        }
+      };
+
+      onClickResetGame();
+
+      // @path-json can be an object or an array, the first will be loaded directly, and the object from the array will be randomly selected
+      /* tsParticles.load(@params); */
+
+      tsParticles
+        .load("tsparticles", {
+          fullScreen: {
+            zIndex: 1001,
+          },
+          particles: {
+            number: {
+              value: 0,
+            },
+            color: {
+              value: ["#00FFFC", "#FC00FF", "#fffc00"],
+            },
+            shape: {
+              type: ["circle", "square", "triangle", "polygon"],
+              options: {
+                polygon: [
+                  {
+                    sides: 5,
+                  },
+                  {
+                    sides: 6,
+                  },
+                ],
+              },
+            },
+            opacity: {
+              value: 1,
+              animation: {
+                enable: true,
+                minimumValue: 0,
+                speed: 2,
+                startValue: "max",
+                destroy: "min",
+              },
+            },
+            size: {
+              value: 5,
+              random: {
+                enable: true,
+                minimumValue: 2,
+              },
+            },
+            links: {
+              enable: false,
+            },
+            life: {
+              duration: {
+                sync: true,
+                value: 5,
+              },
+              count: 1,
+            },
+            move: {
+              enable: true,
+              gravity: {
+                enable: true,
+                acceleration: 10,
+              },
+              speed: {
+                min: 10,
+                max: 20,
+              },
+              decay: 0.1,
+              direction: "none",
+              straight: false,
+              outModes: {
+                default: "destroy",
+                top: "none",
+              },
+            },
+            rotate: {
+              value: {
+                min: 0,
+                max: 360,
+              },
+              direction: "random",
+              move: true,
+              animation: {
+                enable: true,
+                speed: 60,
+              },
+            },
+            tilt: {
+              direction: "random",
+              enable: true,
+              move: true,
+              value: {
+                min: 0,
+                max: 360,
+              },
+              animation: {
+                enable: true,
+                speed: 60,
+              },
+            },
+            roll: {
+              darken: {
+                enable: true,
+                value: 25,
+              },
+              enable: true,
+              speed: {
+                min: 15,
+                max: 25,
+              },
+            },
+            wobble: {
+              distance: 30,
+              enable: true,
+              move: true,
+              speed: {
+                min: -15,
+                max: 15,
+              },
+            },
+          },
+          emitters: {
+            life: {
+              count: 0,
+              duration: 0.2,
+              delay: 0.4,
+            },
+            rate: {
+              delay: 0.1,
+              quantity: 125,
+            },
+            size: {
+              width: 0,
+              height: 0,
+            },
+          },
+        })
+        .then((container) => {
+          particles.stop();
+          console.log("callback - tsparticles config loaded");
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+      const particles = tsParticles.domItem(0);
+    </script>
+  </body>
+</html>
